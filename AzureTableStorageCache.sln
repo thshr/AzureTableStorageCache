@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureTableStorageCache", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureTableStorageCacheSample", "src\AzureTableStorageCacheSample\AzureTableStorageCacheSample.csproj", "{E1B14BDB-46C5-4792-A95E-41D9461298E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTableStorageCacheNetStandard", "AzureTableStorageCacheNetStandard\AzureTableStorageCacheNetStandard.csproj", "{227F598B-8312-48AD-B196-17411FF7C494}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureTableStorageCacheNetStandard", "src\AzureTableStorageCacheNetStandard\AzureTableStorageCacheNetStandard.csproj", "{227F598B-8312-48AD-B196-17411FF7C494}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTableStorageCacheNetStandardSample", "src\AzureTableStorageCacheNetStandardSample\AzureTableStorageCacheNetStandardSample.csproj", "{E168D80D-E491-4DB2-8B29-785F9DB36291}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{227F598B-8312-48AD-B196-17411FF7C494}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{227F598B-8312-48AD-B196-17411FF7C494}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{227F598B-8312-48AD-B196-17411FF7C494}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E168D80D-E491-4DB2-8B29-785F9DB36291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E168D80D-E491-4DB2-8B29-785F9DB36291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E168D80D-E491-4DB2-8B29-785F9DB36291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E168D80D-E491-4DB2-8B29-785F9DB36291}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +49,7 @@ Global
 		{1976F662-ED03-4321-B4B3-E48BF750E144} = {265BAFB4-AB2C-452A-93BD-8015490E421E}
 		{E1B14BDB-46C5-4792-A95E-41D9461298E2} = {265BAFB4-AB2C-452A-93BD-8015490E421E}
 		{227F598B-8312-48AD-B196-17411FF7C494} = {265BAFB4-AB2C-452A-93BD-8015490E421E}
+		{E168D80D-E491-4DB2-8B29-785F9DB36291} = {265BAFB4-AB2C-452A-93BD-8015490E421E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {764D49DA-7689-435C-A07C-2DADF2FC468F}
