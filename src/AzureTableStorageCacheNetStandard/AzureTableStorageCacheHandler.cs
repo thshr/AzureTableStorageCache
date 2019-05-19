@@ -3,10 +3,13 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AzureTableStorageCacheNetStandard.Model;
-using Microsoft.Azure.Cosmos.Table;
+//using Microsoft.Azure.Cosmos.Table;
 //using Microsoft.Azure.Storage;
 //using Microsoft.Azure.Storage.Auth;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Table;
 using static System.Console;
 
 namespace AzureTableStorageCacheNetStandard
@@ -33,7 +36,6 @@ namespace AzureTableStorageCacheNetStandard
             this.accountKey = accountKey ?? throw new ArgumentNullException($"{nameof(accountKey)} cannot be null or empty");
             Connect();
         }
-
 
         public AzureTableStorageCacheHandler(string connectionString, string tableName, string partitionKey) : this(tableName, partitionKey)
         {
@@ -66,7 +68,7 @@ namespace AzureTableStorageCacheNetStandard
 
         public async Task<byte[]> GetAsync(string key, CancellationToken token = new CancellationToken())
         {
-            var cachedItem = await RetrieveAsync(key, token);
+            var cachedItem = await RetrieveAsync(key);
             if (cachedItem?.Data == null)
                 return null;
 
@@ -81,7 +83,7 @@ namespace AzureTableStorageCacheNetStandard
 
         public async Task RefreshAsync(string key, CancellationToken token = new CancellationToken())
         {
-            var data = await RetrieveAsync(key, token);
+            var data = await RetrieveAsync(key);
             if (data != null && ShouldDelete(data))
                 await RemoveAsync(data, token);
         }
@@ -111,28 +113,28 @@ namespace AzureTableStorageCacheNetStandard
                        };
 
             var op = TableOperation.InsertOrReplace(item);
-            return DoTableOperation(op, token);
+            return DoTableOperation(op);
         }
 
         public void Remove(string key) => RemoveAsync(key).Wait();
 
         public async Task RemoveAsync(string key, CancellationToken token = new CancellationToken())
         {
-            var cachedItem = await RetrieveAsync(key, token);
+            var cachedItem = await RetrieveAsync(key);
             var op = TableOperation.Delete(cachedItem);
-            await DoTableOperation(op, token);
+            await DoTableOperation(op);
         }
         
         public async Task RemoveAsync(CachedItem delCachedItem, CancellationToken token = new CancellationToken())
         {
             var op = TableOperation.Delete(delCachedItem);
-            await DoTableOperation(op, token);
+            await DoTableOperation(op);
         }
 
-        private async Task<CachedItem> RetrieveAsync(string key, CancellationToken token)
+        private async Task<CachedItem> RetrieveAsync(string key)
         {
             var op = TableOperation.Retrieve<CachedItem>(partitionKey, key);
-            var result = await DoTableOperation(op, token);
+            var result = await DoTableOperation(op);
             var data = result?.Result as CachedItem;
 
             if (data == null)
@@ -140,7 +142,7 @@ namespace AzureTableStorageCacheNetStandard
 
             data.LastAccessTime = DateTime.UtcNow;
             op = TableOperation.Merge(data);
-            await DoTableOperation(op, token);
+            await DoTableOperation(op);
             return data;
         }
 
@@ -155,12 +157,12 @@ namespace AzureTableStorageCacheNetStandard
             return false;
         }
 
-        private async Task<TableResult> DoTableOperation(TableOperation operation, CancellationToken token)
+        private async Task<TableResult> DoTableOperation(TableOperation operation)
         {
             try
             {
-                var result = await azuretable.ExecuteAsync(operation, token);
-                WriteLine($"Operation {operation.OperationType}: {(HttpStatusCode)result.HttpStatusCode}\tReq Charge: {result.RequestCharge}");
+                var result = await azuretable.ExecuteAsync(operation);
+                WriteLine($"Operation {operation.OperationType}: {(HttpStatusCode)result.HttpStatusCode}");
                 return result;
             }
             catch (StorageException ex)
